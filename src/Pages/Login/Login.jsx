@@ -3,9 +3,11 @@ import {InputText as PrimeInputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import React, {useState} from "react";
 import {useFormik} from "formik";
-import {login} from "../../Service/auth.service.js";
-import {toast} from 'react-toastify'
+import useLoginAction from "../../Redux/Login/LoginActionHook.js";
+import {useSelector} from "react-redux";
 const Login = () => {
+    const {login } = useLoginAction()
+    const token = useSelector((state) => state )
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -27,13 +29,7 @@ const Login = () => {
             return errors
         },
         onSubmit: async (values) => {
-            const response = await login(values)
-            if(response?.status){
-                toast.success("Welcome User")
-            }
-            else{
-                toast.error(response.data.error ?? "Error Logging In")
-            }
+           await login(values);
         }
     })
     return (
