@@ -2,21 +2,21 @@ import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {Card , DataTable , Column , Button} from 'primereact'
+import {getAllEmployees} from "../../Service/auth.service.js";
+import useEmployeeAction from "../../Redux/Employee/EmployeeActionHook.js";
 export default function Employees(){
+    const {getEmployees} = useEmployeeAction()
     const isAuthenticated = useSelector((state) => state.LoginReducer.isAuthenticated)
+    const employees = useSelector((state) => state.EmployeeReducer.employees)
     const navigate = useNavigate()
     useEffect(() => {
         if(!isAuthenticated){
             navigate('/login')
         }
     }, []);
-    const [employees] = useState([
-        { id: 1, name: 'John Doe', position: 'Software Engineer', department: 'IT' },
-        { id: 2, name: 'Jane Smith', position: 'Project Manager', department: 'Management' },
-        { id: 3, name: 'Sam Brown', position: 'Designer', department: 'Design' },
-        { id: 4, name: 'Emily White', position: 'HR Specialist', department: 'HR' },
-        { id: 5, name: 'Michael Green', position: 'Developer', department: 'IT' }
-    ]);
+    useEffect(() => {
+        getEmployees()
+    }, []);
 
     const header = (
         <div className="flex  px-4 flex-row justify-content-between items-center">
@@ -26,20 +26,40 @@ export default function Employees(){
             <div className="flex flex-column pt-5">
                 <Button
                 label={"Create New Employee"}
+                onClick={() => navigate('/employees/create')}
                 />
 
             </div>
         </div>
     );
 
+    const actionBodyTemplate = (rowData) => {
+        return (
+            <div className="flex justify-content-around">
+                <Button
+                    icon="pi pi-eye"
+                    className="p-button-rounded p-button-info"
+                    onClick={() => console.log(rowData.id)}
+                />
+                <Button
+                    icon="pi pi-trash"
+                    className="p-button-rounded p-button-danger"
+                    onClick={() => console.log(rowData.id)}
+                />
+            </div>
+        );
+    };
+
     return (
-        <div className="flex justify-content-center w-full mt-5" >
-            <Card header={header} className="w-9 h-full">
-                <DataTable value={employees} paginator rows={5} responsiveLayout="scroll">
-                    <Column field="name" header="Name" sortable />
-                    <Column field="position" header="Position" sortable />
-                    <Column field="department" header="Department" sortable />
-                    <Column field={"action"} header={"Action"} />
+        <div className="flex justify-content-center h-full  w-full mt-5" >
+            <Card header={header} className="w-full">
+                <DataTable value={employees} paginator rows={5} >
+                    <Column field="id" header="id" sortable />
+                    <Column field="firstName" header="First Name" sortable />
+                    <Column field="lastName" header="Last Name" sortable />
+                    <Column field="email" header="Email" sortable />
+                    <Column body={actionBodyTemplate} header="Actions" />
+
                 </DataTable>
             </Card>
         </div>

@@ -13,7 +13,6 @@ import {BrowserRouter} from "react-router";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-      <BrowserRouter>
           <Provider store={Store}>
               <PrimeReactProvider>
                   <ToastContainer
@@ -28,10 +27,13 @@ createRoot(document.getElementById('root')).render(
                       pauseOnHover
                       theme="light"
                   />
+                  <BrowserRouter>
+
                   <App />
+                  </BrowserRouter>
+
               </PrimeReactProvider>
           </Provider>
-      </BrowserRouter>
 
   </StrictMode>,
 )
