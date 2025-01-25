@@ -5,7 +5,7 @@ import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 import 'primereact/resources/themes/lara-light-indigo/theme.css'; // Optional: Change theme
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-
+import 'primeflex/primeflex.css'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
       <PrimeReactProvider>
