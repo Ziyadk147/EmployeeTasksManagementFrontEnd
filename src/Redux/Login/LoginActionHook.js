@@ -3,9 +3,11 @@ import {loginRequest, logoutRequest} from "../../Service/auth.service.js";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from 'react-toastify'
 import {LOGIN_SUCCESS} from "./LoginTypes.js";
+import {useNavigate} from "react-router";
 const useLoginAction = () => {
     const dispatch = useDispatch();
-    const token = useSelector((state) => state.token)
+    const navigate = useNavigate()
+    const token = useSelector((state) => state.LoginReducer.token)
     const login = async (payload) => {
         dispatch(loginStart());
         try {
@@ -13,17 +15,21 @@ const useLoginAction = () => {
             toast("Login Successful")
             localStorage.setItem("login_token" , response.data)
             dispatch(loginSuccess(response.data))
+            navigate('/')
         } catch (error) {
             dispatch(loginFailure(error) || "Login Failed")
             console.log(error)
         }
     }
     const logout = async () => {
+        // console.log(token)
         if (token) {
             const response = await logoutRequest();
-            if (response?.status === 200) {
+            if (response?.status) {
                 toast(response.message || "Logged Out Successfully");
+                localStorage.removeItem("login_token")
                 dispatch(Logout())
+                navigate('/login')
             }
         }
     }
