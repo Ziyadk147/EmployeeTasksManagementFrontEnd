@@ -7,7 +7,6 @@ import useLoginAction from "../../Redux/Login/LoginActionHook.js";
 import {useSelector} from "react-redux";
 const Login = () => {
     const {login } = useLoginAction()
-    const token = useSelector((state) => state )
     const formik = useFormik({
         initialValues: {
             email: "",

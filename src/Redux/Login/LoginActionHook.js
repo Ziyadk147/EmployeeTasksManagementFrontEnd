@@ -2,6 +2,7 @@ import {loginFailure, loginStart, loginSuccess, Logout} from "./LoginActions.js"
 import {loginRequest, logoutRequest} from "../../Service/auth.service.js";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from 'react-toastify'
+import {LOGIN_SUCCESS} from "./LoginTypes.js";
 const useLoginAction = () => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.token)
@@ -26,8 +27,18 @@ const useLoginAction = () => {
             }
         }
     }
+    const refreshLoginCheck =() => {
+        const token = localStorage.getItem("login_token")
+        if(token){
+            dispatch(loginSuccess(token))
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     return {
-        login, logout
+        login, logout, refreshLoginCheck
     }
 }
 export default useLoginAction
