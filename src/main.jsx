@@ -6,10 +6,23 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css'; // Optional: C
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css'
+import {ToastContainer} from 'react-toastify'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
       <PrimeReactProvider>
-        <App />
+          <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+          />
+              <App />
       </PrimeReactProvider>
   </StrictMode>,
 )

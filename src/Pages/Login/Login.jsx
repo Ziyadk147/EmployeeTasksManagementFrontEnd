@@ -2,39 +2,69 @@ import {Card} from "primereact/card";
 import {InputText as PrimeInputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import React, {useState} from "react";
-
+import {useFormik} from "formik";
+import {login} from "../../Service/auth.service.js";
+import {toast} from 'react-toastify'
 const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const formik = useFormik({
+        initialValues: {
+            email: "",
+            password: "",
+        },
+        validate: (values) => {
+            const errors = {}
+            if (!values.email) {
+                errors.email = "Email is Required"
+            } else if (!/\S+@\S+\.\S+/.test(values.email)) {
+                errors.email = 'Invalid email address';
+            }
 
-    const handleLogin = () => {
-        // Handle the login logic here
-        console.log('Username:', username);
-        console.log('Password:', password);
-    };
+            if (!values.password) {
+                errors.password = "Password is required"
+            } else if (values.password < 6) {
+                errors.password = "Password Length must be greater than 6"
+            }
+            return errors
+        },
+        onSubmit: async (values) => {
+            const response = await login(values)
+            if(response?.status){
+                toast.success("Welcome User")
+            }
+            else{
+                toast.error(response.data.error ?? "Error Logging In")
+            }
+        }
+    })
     return (
-        <Card title="Login" className="p-shadow-4 p-p-4" style={{ width: '300px' }}>
+        <Card title="Login" className="p-shadow-4 p-p-4" style={{width: '300px'}}>
             <div className="mb-2">
-                <label htmlFor="username">Username</label>
+                <label htmlFor="EMAIL">Email</label>
                 <PrimeInputText
-                    id="username"
+                    id="email"
                     type={"email"}
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
                     className="p-inputtext-sm w-full mb-2 mt-2"
                 />
+                {formik.errors.email && formik.touched.email && (
+                    <span className={"text-red-500"}>{formik.errors.email}</span>
+                )}
             </div>
             <div className="mb-4">
                 <label htmlFor="password">Password</label>
                 <PrimeInputText
                     id="password"
                     type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
                     className="p-inputtext-sm w-full mt-2"
                 />
+                {formik.errors.password && formik.touched.password && (
+                    <span className={"text-red-500"}>{formik.errors.password}</span>
+                )}
             </div>
-            <Button label="Login" onClick={handleLogin} className="p-button-sm w-full" />
+            <Button label="Login" onClick={formik.handleSubmit} className="p-button-sm w-full"/>
         </Card>
 
     )
