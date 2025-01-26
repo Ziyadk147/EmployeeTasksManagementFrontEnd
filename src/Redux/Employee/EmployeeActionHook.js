@@ -6,7 +6,7 @@ import {
     deleteEmployeeRequest,
     deleteEmployeeSuccess,
     employeeGet,
-    employeeGetSuccess
+    employeeGetSuccess, getEmployeeByIdSuccess
 } from "./EmployeeActions.js";
 import {
     createEmployee,
@@ -19,7 +19,7 @@ import {
 const useEmployeeAction = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
-
+    const employees = useSelector(state => state.EmployeeReducer.employees)
     const getEmployees = async () => {
         dispatch(employeeGet())
         const response = await getAllEmployees();
@@ -35,9 +35,9 @@ const useEmployeeAction = () => {
         }
     }
     const getEmployeeById = async (id) => {
-        dispatch(employeeGet())
-        const response = await getEmployee(id)
-        dispatch(employeeGetSuccess(response.data))
+        const employee = employees.filter((item) => item.id === id)
+        dispatch(getEmployeeByIdSuccess(employee))
+        console.log(employees)
     }
 
     const UpdateEmployee = async (values, id) => {

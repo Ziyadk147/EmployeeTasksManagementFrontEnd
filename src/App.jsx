@@ -5,17 +5,23 @@ import {useSelector} from "react-redux";
 import {Route, Routes} from "react-router-dom";
 import SidebarComponent from './Components/Sidebar/Sidebar.jsx'
 import {PanelMenu} from "primereact/panelmenu";
+import useEmployeeAction from "./Redux/Employee/EmployeeActionHook.js";
 export default function App() {
     const { refreshLoginCheck } = useLoginAction();
+    const {getEmployees} = useEmployeeAction()
     const isAuthenticated = useSelector((state) => state.LoginReducer.isAuthenticated);
     useEffect(() => {
         refreshLoginCheck()
     }, [isAuthenticated]);
 
+    useEffect(() => {
+        getEmployees();
+    }, []);
     const Login = React.lazy(() => import('./Pages/Login/Login.jsx'))
     const Main = React.lazy(() => import('./Pages/Main/Main.jsx'))
     const Employees = React.lazy(() => import('./Pages/Employees/Employees.jsx'))
     const EmployeesCreate = React.lazy(() => import('./Pages/Employees/EmployeesCreate.jsx'))
+    const TaskManagement = React.lazy(() => import('./Pages/TaskManagement/TaskManagement.jsx'))
 
     const pages = [
 
@@ -23,25 +29,9 @@ export default function App() {
         {name: "Employees" , path:"/employees/index" , element: <Employees /> },
         {name: "EmployeesCreate" , path:"/employees/create" , element: <EmployeesCreate /> },
         {name: "EmployeesEdit" , path:"/employees/:id" , element: <EmployeesCreate  /> },
+        {name: "Kanban" , path:"/kanban" , element: <TaskManagement  /> },
         {name: "Main" , path:"/" , element: <Main /> }
     ]
-    const menuItems = [
-        {
-            label: "Dashboard",
-            icon: "pi pi-fw pi-home",
-            command: () => (window.location.href = "/dashboard"),
-        },
-        {
-            label: "Settings",
-            icon: "pi pi-fw pi-cog",
-            command: () => (window.location.href = "/settings"),
-        },
-        {
-            label: "Profile",
-            icon: "pi pi-fw pi-user",
-            command: () => (window.location.href = "/profile"),
-        },
-    ];
 
     return (
         <div className="flex flex-row lg:flex-row " style={{height:"97vh"}}>

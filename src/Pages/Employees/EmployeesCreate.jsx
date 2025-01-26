@@ -75,7 +75,7 @@ const EmployeesCreate = () => {
     } , [employees])
 
     return (
-        <div className="flex justify-content-center align-items-center w-full mt-5">
+        <div className="flex justify-content-center  w-full mt-5">
             <Card header={header} className="w-9">
                     <div>
                         {/* Email Field */}

@@ -1,7 +1,7 @@
 import {
     DELETE_EMPLOYEE_FAILURE,
     DELETE_EMPLOYEE_REQUEST,
-    DELETE_EMPLOYEE_SUCCESS,
+    DELETE_EMPLOYEE_SUCCESS, EMPLOYEE_FIND_SUCCESS,
     EMPLOYEES_FAILURE, EMPLOYEES_SUCCESS,
     FETCH_EMPLOYEES_REQUEST,
 } from "./EmployeeTypes.js";
@@ -21,6 +21,14 @@ export const employeeFailure = (error) => {
         payload: error
     }
 }
+
+export const getEmployeeByIdSuccess = (data) => {
+    return {
+        type:EMPLOYEE_FIND_SUCCESS,
+        payload: data
+    }
+}
+
 
 export const deleteEmployeeRequest = () => {
     return {
