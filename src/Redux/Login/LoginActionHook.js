@@ -3,7 +3,7 @@ import {loginRequest, logoutRequest} from "../../Service/auth.service.js";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from 'react-toastify'
 import {LOGIN_SUCCESS} from "./LoginTypes.js";
-import {useNavigate} from "react-router";
+import {useNavigate} from "react-router-dom";
 const useLoginAction = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate()

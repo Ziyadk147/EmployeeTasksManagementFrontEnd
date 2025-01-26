@@ -4,9 +4,20 @@ import {Button} from "primereact/button";
 import {Card} from "primereact/card";
 import {useFormik} from "formik";
 import useEmployeeAction from "../../Redux/Employee/EmployeeActionHook.js";
+import {useParams} from "react-router-dom";
+import {useEffect} from "react";
+import {useSelector} from "react-redux";
 
 const EmployeesCreate = () => {
-    const {addEmployee} = useEmployeeAction()
+    const {addEmployee , getEmployeeById , UpdateEmployee} = useEmployeeAction()
+    const id = useParams().id
+    useEffect(() => {
+        if(id){
+            getEmployeeById(id)
+        }
+    }, [id]);
+    const employees = useSelector((state) => state.EmployeeReducer.employees);
+
 
     const formik = useFormik({
         initialValues: {
@@ -41,14 +52,28 @@ const EmployeesCreate = () => {
             return errors;
         },
         onSubmit: async (values) => {
-            await addEmployee(values)
+            if(id){
+                await UpdateEmployee(values , parseInt(id))
+            }
+            else{
+                await addEmployee(values)
+
+            }
             },
     })
     const header = (
         <div className="flex pl-3  text-center">
-                <h2>Create Employee</h2>
+                <h2>{id ? "Edit" : "Create"} Employee</h2>
         </div>
     )
+    useEffect(() => {
+        if(employees){
+            formik.setFieldValue("email" , employees.email)
+            formik.setFieldValue("firstName" , employees.firstName)
+            formik.setFieldValue("lastName" , employees.lastName)
+        }
+    } , [employees])
+
     return (
         <div className="flex justify-content-center align-items-center w-full mt-5">
             <Card header={header} className="w-9">
@@ -113,7 +138,7 @@ const EmployeesCreate = () => {
 
                         {/* Submit Button */}
                     </div>
-                <Button label="Create" icon="pi pi-user" type="submit" onClick={formik.handleSubmit} className="w-2 mt-4"/>
+                <Button label={id ? "Update User" : "Create User"} icon="pi pi-user" type="submit" onClick={formik.handleSubmit} className="w-2 mt-4"/>
 
             </Card>
         </div>

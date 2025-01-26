@@ -1,4 +1,4 @@
-import { get, post } from "../web.request";
+import {deleteRequest, get, post, put} from "../web.request";
 
 export const loginRequest = async (data) => {
     return await post(`/login` , data);
@@ -12,4 +12,13 @@ export const createEmployee = async (payload) => {
 }
 export const getAllEmployees = async () => {
     return await get("/employee")
+}
+export const getEmployee = async (id) => {
+    return await get(`/employee/${id}`)
+}
+export const updateEmployee = async (payload , id) => {
+    return await put(`/employee/${id}` , payload);
+}
+export const deleteEmployee = async (id) => {
+    return  await deleteRequest(`/employee/${id}`)
 }

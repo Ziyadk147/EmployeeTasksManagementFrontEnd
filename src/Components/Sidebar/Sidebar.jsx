@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Sidebar , Button , Menubar} from "primereact"
 import useLoginAction from "../../Redux/Login/LoginActionHook.js";
-import {useNavigate} from "react-router";
+import {useNavigate} from "react-router-dom";
 const SidebarComponent = () => {
     const [visible, setVisible] = useState(false);
     const { logout } = useLoginAction();

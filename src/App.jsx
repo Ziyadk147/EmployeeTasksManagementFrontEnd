@@ -1,11 +1,8 @@
 import React, {Suspense, useEffect, useState} from 'react';
-import { Card } from 'primereact/card';
-import { InputText as PrimeInputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
 import Login from "./Pages/Login/Login.jsx";
 import useLoginAction from "./Redux/Login/LoginActionHook.js";
 import {useSelector} from "react-redux";
-import {Route, Routes} from "react-router";
+import {Route, Routes} from "react-router-dom";
 import SidebarComponent from './Components/Sidebar/Sidebar.jsx'
 import {PanelMenu} from "primereact/panelmenu";
 export default function App() {
@@ -25,6 +22,7 @@ export default function App() {
         {name: "Login" , path:"/login" , element: <Login />},
         {name: "Employees" , path:"/employees/index" , element: <Employees /> },
         {name: "EmployeesCreate" , path:"/employees/create" , element: <EmployeesCreate /> },
+        {name: "EmployeesEdit" , path:"/employees/:id" , element: <EmployeesCreate  /> },
         {name: "Main" , path:"/" , element: <Main /> }
     ]
     const menuItems = [

@@ -1,5 +1,7 @@
 import {employeeInitial} from "./EmployeeInitial.js";
 import {
+    DELETE_EMPLOYEE_FAILURE,
+    DELETE_EMPLOYEE_REQUEST, DELETE_EMPLOYEE_SUCCESS,
     EMPLOYEES_FAILURE, EMPLOYEES_SUCCESS,
     FETCH_EMPLOYEES_REQUEST,
 } from "./EmployeeTypes.js";
@@ -23,6 +25,23 @@ const EmployeeReducer = (state = employeeInitial , action) => {
                 isLoading: false,
                 errors: action.payload
             }
+        case DELETE_EMPLOYEE_REQUEST:
+                    return {
+                        ...state,
+                        isLoading: true,
+                    }
+        case DELETE_EMPLOYEE_SUCCESS:
+                    return {
+                        ...state,
+                        isLoading: false,
+                        employees: [state.employees.filter((item ) => item.id !== action.payload.id)]
+                    }
+       case DELETE_EMPLOYEE_FAILURE:
+                        return {
+                            ...state,
+                            isLoading: false,
+                            errors: action.payload
+                        }
 
         default:
             return state

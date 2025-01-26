@@ -1,11 +1,11 @@
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {useNavigate} from "react-router";
+import {useNavigate} from "react-router-dom";
 import {Card , DataTable , Column , Button} from 'primereact'
 import {getAllEmployees} from "../../Service/auth.service.js";
 import useEmployeeAction from "../../Redux/Employee/EmployeeActionHook.js";
 export default function Employees(){
-    const {getEmployees} = useEmployeeAction()
+    const { getEmployees , destroyEmployee} = useEmployeeAction()
     const isAuthenticated = useSelector((state) => state.LoginReducer.isAuthenticated)
     const employees = useSelector((state) => state.EmployeeReducer.employees)
     const navigate = useNavigate()
@@ -13,10 +13,21 @@ export default function Employees(){
         if(!isAuthenticated){
             navigate('/login')
         }
-    }, []);
+    }, [isAuthenticated]);
     useEffect(() => {
         getEmployees()
     }, []);
+
+
+    const handleEdit = (id) => {
+        window.location.href = `/employees/${id}`
+    }
+    const handleDelete = (id) => {
+        destroyEmployee(id);
+        getEmployees()
+    }
+
+
 
     const header = (
         <div className="flex  px-4 flex-row justify-content-between items-center">
@@ -26,7 +37,7 @@ export default function Employees(){
             <div className="flex flex-column pt-5">
                 <Button
                 label={"Create New Employee"}
-                onClick={() => navigate('/employees/create')}
+                onClick={() => window.location.href = "/employees/create"}
                 />
 
             </div>
@@ -36,16 +47,21 @@ export default function Employees(){
     const actionBodyTemplate = (rowData) => {
         return (
             <div className="flex justify-content-around">
-                <Button
-                    icon="pi pi-eye"
-                    className="p-button-rounded p-button-info"
-                    onClick={() => console.log(rowData.id)}
-                />
-                <Button
-                    icon="pi pi-trash"
-                    className="p-button-rounded p-button-danger"
-                    onClick={() => console.log(rowData.id)}
-                />
+                {employees && rowData && (
+               <>
+                   <Button
+                       icon="pi pi-pencil"
+                       className="p-button-rounded p-button-info"
+                       onClick={() => handleEdit(rowData.id)}
+                   />
+                   <Button
+                       icon="pi pi-trash"
+                       className="p-button-rounded p-button-danger"
+                       onClick={() => handleDelete(rowData.id)}
+                   />
+               </>
+                )}
+
             </div>
         );
     };
