@@ -9,11 +9,10 @@ import 'primeflex/primeflex.css'
 import {ToastContainer} from 'react-toastify'
 import {Provider} from "react-redux";
 import Store from "./Redux/Store.js";
-import {BrowserRouter} from "react-router";
+import {BrowserRouter} from "react-router-dom";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-      <BrowserRouter>
           <Provider store={Store}>
               <PrimeReactProvider>
                   <ToastContainer
@@ -28,10 +27,13 @@ createRoot(document.getElementById('root')).render(
                       pauseOnHover
                       theme="light"
                   />
+                  <BrowserRouter>
+
                   <App />
+                  </BrowserRouter>
+
               </PrimeReactProvider>
           </Provider>
-      </BrowserRouter>
 
   </StrictMode>,
 )
