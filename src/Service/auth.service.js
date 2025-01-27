@@ -22,3 +22,10 @@ export const updateEmployee = async (payload , id) => {
 export const deleteEmployee = async (id) => {
     return  await deleteRequest(`/employee/${id}`)
 }
+
+export const createTask = async (payload) => {
+    return await post(`/task` , payload);
+}
+export const getAllTasks = async () => {
+    return await get("/task")
+}

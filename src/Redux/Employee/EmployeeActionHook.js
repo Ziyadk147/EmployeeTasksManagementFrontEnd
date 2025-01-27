@@ -35,9 +35,9 @@ const useEmployeeAction = () => {
         }
     }
     const getEmployeeById = async (id) => {
-        const employee = employees.filter((item) => item.id === id)
-        dispatch(getEmployeeByIdSuccess(employee))
-        console.log(employees)
+        dispatch(employeeGet())
+        const response = await getEmployee(id)
+        dispatch(getEmployeeByIdSuccess(response.data))
     }
 
     const UpdateEmployee = async (values, id) => {

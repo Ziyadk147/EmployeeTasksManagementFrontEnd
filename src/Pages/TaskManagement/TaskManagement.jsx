@@ -4,23 +4,31 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Avatar } from "primereact/avatar";
 import TaskAdditionSidebar from "../../Components/Sidebar/TaskAdditionSidebar.jsx";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import useTaskAction from "../../Redux/Task/TaskActionHook.js";
 
 const TaskManagement = () => {
     const [sidebarData, setSidebarData] = useState({ id: null, day: null });
     const [sidebarVisible, setSidebarVisible] = useState(false);
-
+    const { getTasks, addTask } = useTaskAction();
     const days = ["Mon 01/20", "Tue 01/21", "Wed 01/22", "Thu 01/23", "Fri 01/24", "Sat 01/25", "Sun 01/26"];
     const employees = useSelector((state) => state.EmployeeReducer.employees);
+    const reduxTasks = useSelector((state) => state.TaskReducer.tasks);
+    const dispatch = useDispatch();
 
-    const [tasks, setTasks] = useState([
-        { id: 5, day: "Mon 01/20", task: "Do something" },
-        { id: 5, day: "Mon 01/20", task: "Additional Task" },
-        { id: 6, day: "Tue 01/21", task: "Work on project" },
-    ]);
+    useEffect(() => {
+        getTasks();
+    }, []);
 
+    const [tasks, setTasks] = useState(reduxTasks);
+
+    useEffect(() => {
+        setTasks(reduxTasks); // Sync redux tasks to local state
+    }, [reduxTasks]);
+
+    console.log(tasks)
     const handleTaskAddition = (id, day) => {
         setSidebarData({ id, day });
         setSidebarVisible(true);
@@ -29,54 +37,70 @@ const TaskManagement = () => {
     const DraggableTask = ({ task }) => {
         const [, dragRef] = useDrag({
             type: "TASK",
-            item: { id: task.id, day: task.day, task: task.task },
+            item: {
+                employeeID: task.employeeID,
+                day: task.taskDate,
+                taskDescription: task.taskDescription,
+            },
         });
 
         return (
             <Button ref={dragRef} className="p-button-text bg-primary w-full">
-                {task.task}
+                {task.taskDescription}
             </Button>
         );
     };
 
+
     const DroppableCell = ({ rowData, day }) => {
         const [, dropRef] = useDrop({
             accept: "TASK",
-            drop: (item) => handleTaskDrop(item.id, rowData.id, day, item.task),
+            drop: (item) => handleTaskDrop(item.employeeID, rowData.id, day, item.taskDescription),
         });
 
-        const filteredTasks = tasks.filter((task) => task.id === rowData.id && task.day === day);
+        // Filter tasks by employeeID and taskDate
+        const filteredTasks = tasks.filter(
+            (task) => task.employeeID === rowData.id && task.taskDate === day
+        );
 
         return (
             <div ref={dropRef} className="flex flex-wrap gap-2 justify-center items-center h-full relative group">
-                {filteredTasks.map((task, index) => (
-                    <DraggableTask key={index} task={task} />
-                ))}
-                <Button
-                    icon="pi pi-plus"
-                    className="p-button-rounded p-button-text"
-                    onClick={() => handleTaskAddition(rowData.id, day)}
-                />
+                {filteredTasks.length > 0 ? (
+                    filteredTasks.map((task, index) => (
+                        <DraggableTask key={index} task={task} />
+                    ))
+                ) : (
+                    <Button
+                        icon="pi pi-plus"
+                        className="p-button-rounded p-button-text"
+                        onClick={() => handleTaskAddition(rowData.id, day)}
+                    />
+                )}
+
             </div>
         );
     };
 
-    // Handle task drop logic
+
     const handleTaskDrop = (taskId, rowId, newDay, taskDescription) => {
-        setTasks((prevTasks) => {
-            // Remove the task from its original position
-            const updatedTasks = prevTasks.filter((task) => !(task.id === taskId && task.task === taskDescription));
-
-            // Add the task to the new position
-            updatedTasks.push({ id: rowId, day: newDay, task: taskDescription });
-
-            return updatedTasks;
+        const updatedTasks = tasks.map((task) => {
+            if (task.employeeID === taskId && task.taskDescription === taskDescription) {
+                return { ...task, employeeID: rowId, taskDate: newDay };
+            }
+            return task;
         });
+
+        setTasks(updatedTasks);
+        dispatch({ type: "UPDATE_TASKS", payload: updatedTasks });
     };
 
-    useEffect(() => {
-        console.log(tasks);
-    }, [tasks]);
+
+    function handleTaskSubmit(tasks) {
+        if (tasks.length !== -1) {
+            console.log(JSON.stringify(tasks));
+            addTask(JSON.stringify(tasks));
+        }
+    }
 
     const renderDayColumn = (day) => (
         <Column
@@ -96,7 +120,7 @@ const TaskManagement = () => {
                         <Button label="Templates" className="p-button-outlined" />
                         <Button label="Actions" className="p-button-outlined" />
                         <Button label="Add" className="p-button-outlined" />
-                        <Button label="Publish" icon="pi pi-check" className="p-button-primary" onClick={() => console.log(tasks)} />
+                        <Button label="Publish" icon="pi pi-check" className="p-button-primary" onClick={() => handleTaskSubmit(tasks)} />
                     </div>
                 </div>
 
@@ -123,6 +147,7 @@ const TaskManagement = () => {
                     {days.map((day) => renderDayColumn(day))}
                 </DataTable>
             </div>
+
         </DndProvider>
     );
 };

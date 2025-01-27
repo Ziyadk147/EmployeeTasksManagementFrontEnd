@@ -16,7 +16,7 @@ const EmployeesCreate = () => {
             getEmployeeById(id)
         }
     }, [id]);
-    const employees = useSelector((state) => state.EmployeeReducer.employees);
+    const employees = useSelector((state) => state.EmployeeReducer.selectedEmployee);
 
 
     const formik = useFormik({
@@ -59,11 +59,11 @@ const EmployeesCreate = () => {
                 await addEmployee(values)
 
             }
-            },
+        },
     })
     const header = (
         <div className="flex pl-3  text-center">
-                <h2>{id ? "Edit" : "Create"} Employee</h2>
+            <h2>{id ? "Edit" : "Create"} Employee</h2>
         </div>
     )
     useEffect(() => {
@@ -75,69 +75,69 @@ const EmployeesCreate = () => {
     } , [employees])
 
     return (
-        <div className="flex justify-content-center  w-full mt-5">
+        <div className="flex justify-content-center align-items-center w-full mt-5">
             <Card header={header} className="w-9">
-                    <div>
-                        {/* Email Field */}
-                        <label htmlFor="email" className="block text-900 font-medium mb-3 mt-3">
-                            Email
-                        </label>
-                        <InputText
-                            id="email"
-                            name="email"
-                            type="text"
-                            placeholder="Email address"
-                            className={`w-full  ${formik.errors.email && formik.touched.email ? "p-invalid" : ""}`}
-                            value={formik.values.email}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
-                        {formik.touched.email && formik.errors.email && (
-                            <small className="p-error">{formik.errors.email}</small>
-                        )}
+                <div>
+                    {/* Email Field */}
+                    <label htmlFor="email" className="block text-900 font-medium mb-3 mt-3">
+                        Email
+                    </label>
+                    <InputText
+                        id="email"
+                        name="email"
+                        type="text"
+                        placeholder="Email address"
+                        className={`w-full  ${formik.errors.email && formik.touched.email ? "p-invalid" : ""}`}
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.email && formik.errors.email && (
+                        <small className="p-error">{formik.errors.email}</small>
+                    )}
 
-                        {/* First Name Field */}
-                        <label htmlFor="firstName" className="block text-900 font-medium mb-3 mt-3">
-                            First Name
-                        </label>
-                        <InputText
-                            id="firstName"
-                            name="firstName"
-                            type="text"
-                            placeholder="First Name"
-                            className={`w-full ${
-                                formik.errors.firstName && formik.touched.firstName ? "p-invalid" : ""
-                            }`}
-                            value={formik.values.firstName}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
-                        {formik.touched.firstName && formik.errors.firstName && (
-                            <small className="p-error">{formik.errors.firstName}</small>
-                        )}
+                    {/* First Name Field */}
+                    <label htmlFor="firstName" className="block text-900 font-medium mb-3 mt-3">
+                        First Name
+                    </label>
+                    <InputText
+                        id="firstName"
+                        name="firstName"
+                        type="text"
+                        placeholder="First Name"
+                        className={`w-full ${
+                            formik.errors.firstName && formik.touched.firstName ? "p-invalid" : ""
+                        }`}
+                        value={formik.values.firstName}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.firstName && formik.errors.firstName && (
+                        <small className="p-error">{formik.errors.firstName}</small>
+                    )}
 
-                        {/* Last Name Field */}
-                        <label htmlFor="lastName" className="block text-900 font-medium mb-3 mt-3">
-                            Last Name
-                        </label>
-                        <InputText
-                            id="lastName"
-                            name="lastName"
-                            type="text"
-                            placeholder="Last Name"
-                            className={`w-full ${
-                                formik.errors.lastName && formik.touched.lastName ? "p-invalid" : ""
-                            }`}
-                            value={formik.values.lastName}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
-                        {formik.touched.lastName && formik.errors.lastName && (
-                            <small className="p-error">{formik.errors.lastName}</small>
-                        )}
+                    {/* Last Name Field */}
+                    <label htmlFor="lastName" className="block text-900 font-medium mb-3 mt-3">
+                        Last Name
+                    </label>
+                    <InputText
+                        id="lastName"
+                        name="lastName"
+                        type="text"
+                        placeholder="Last Name"
+                        className={`w-full ${
+                            formik.errors.lastName && formik.touched.lastName ? "p-invalid" : ""
+                        }`}
+                        value={formik.values.lastName}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.lastName && formik.errors.lastName && (
+                        <small className="p-error">{formik.errors.lastName}</small>
+                    )}
 
-                        {/* Submit Button */}
-                    </div>
+                    {/* Submit Button */}
+                </div>
                 <Button label={id ? "Update User" : "Create User"} icon="pi pi-user" type="submit" onClick={formik.handleSubmit} className="w-2 mt-4"/>
 
             </Card>

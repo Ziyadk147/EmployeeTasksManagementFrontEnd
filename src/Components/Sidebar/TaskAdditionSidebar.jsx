@@ -21,7 +21,8 @@ export default function TaskAdditionSidebar({visible, setVisible, id, day , task
             getEmployeeById(id)
         }
     }, [id]);
-    const employees = useSelector((state) => state.EmployeeReducer.selectedEmployee && state.EmployeeReducer.selectedEmployee[0]);
+    const employees = useSelector((state) => state.EmployeeReducer.selectedEmployee);
+    console.log(employees )
     const formik = useFormik({
         initialValues : {
             taskDate: "",
@@ -40,9 +41,9 @@ export default function TaskAdditionSidebar({visible, setVisible, id, day , task
             const dayOfMonth = String(date.getDate()).padStart(2, '0');
             const formattedDate = `${day} ${month}/${dayOfMonth}`;
             const payload = {
-                day: formattedDate,
-                task: values.task,
-                id:values.employeeId
+                taskDate: formattedDate,
+                taskDescription: values.task,
+                employeeID:values.employeeId
             };
             formik.resetForm()
             setTasks([...tasks , payload])
