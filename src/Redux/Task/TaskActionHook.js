@@ -35,7 +35,7 @@ const useTaskAction = () => {
     // const UpdateEmployee = async (values, id) => {
     //     const response = await updateEmployee(values, id)
     //     if (response?.status) {
-    //         window.location.href = '/employees/index'
+    //         window.location.href = '//'
     //         toast(response?.message || "Employee Updated Successfully")
     //
     //     } else {

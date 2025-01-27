@@ -28,7 +28,7 @@ const useEmployeeAction = () => {
     const addEmployee = async (payload) => {
         const response = await createEmployee(payload)
         if (response?.status) {
-            window.location.href = '/employees/index'
+            window.location.href = '/'
             toast(response?.message || "Employee Created Successfully")
         } else {
             toast(response?.message || "Error Creating Employee")
@@ -43,7 +43,7 @@ const useEmployeeAction = () => {
     const UpdateEmployee = async (values, id) => {
         const response = await updateEmployee(values, id)
         if (response?.status) {
-            window.location.href = '/employees/index'
+            window.location.href = '/'
             toast(response?.message || "Employee Updated Successfully")
 
         } else {

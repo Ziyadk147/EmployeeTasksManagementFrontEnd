@@ -4,7 +4,7 @@ import {Button} from "primereact/button";
 import {Card} from "primereact/card";
 import {useFormik} from "formik";
 import useEmployeeAction from "../../Redux/Employee/EmployeeActionHook.js";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect} from "react";
 import {useSelector} from "react-redux";
 import useLoginAction from "../../Redux/Login/LoginActionHook.js";
@@ -12,20 +12,19 @@ import useLoginAction from "../../Redux/Login/LoginActionHook.js";
 const EmployeesCreate = () => {
     const {addEmployee , getEmployeeById , UpdateEmployee} = useEmployeeAction()
     const id = useParams().id
-    const {isAuthenticated} = useLoginAction();
-
-    useEffect(() => {
-        if(!isAuthenticated){
-            window.location.href = "/login"
-        }
-    })
     useEffect(() => {
         if(id){
             getEmployeeById(id)
         }
     }, [id]);
     const employees = useSelector((state) => state.EmployeeReducer.selectedEmployee);
-
+    const isAuthenticated = useSelector((state) => state.LoginReducer.isAuthenticated)
+    const navigate = useNavigate()
+    useEffect(() => {
+        if(!isAuthenticated){
+            navigate('/login')
+        }
+    }, [isAuthenticated]);
 
     const formik = useFormik({
         initialValues: {

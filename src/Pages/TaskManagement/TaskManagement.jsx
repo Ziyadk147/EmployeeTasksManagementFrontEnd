@@ -9,6 +9,7 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import useTaskAction from "../../Redux/Task/TaskActionHook.js";
 import useLoginAction from "../../Redux/Login/LoginActionHook.js";
+import {useNavigate} from "react-router-dom";
 
 const TaskManagement = () => {
     const [sidebarData, setSidebarData] = useState({ id: null, day: null });
@@ -18,18 +19,17 @@ const TaskManagement = () => {
     const employees = useSelector((state) => state.EmployeeReducer.employees);
     const reduxTasks = useSelector((state) => state.TaskReducer.tasks);
     const dispatch = useDispatch();
-
+    const isAuthenticated = useSelector((state) => state.LoginReducer.isAuthenticated)
+    const navigate = useNavigate()
     useEffect(() => {
         getTasks();
     }, []);
-
-    const {isAuthenticated} = useLoginAction();
-
     useEffect(() => {
         if(!isAuthenticated){
-            window.location.href = "/login"
+            navigate('/login')
         }
-    })
+    }, [isAuthenticated]);
+
     const [tasks, setTasks] = useState(reduxTasks);
 
     useEffect(() => {

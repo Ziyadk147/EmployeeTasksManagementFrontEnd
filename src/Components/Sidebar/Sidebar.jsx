@@ -7,8 +7,7 @@ const SidebarComponent = () => {
     const { logout } = useLoginAction();
     const navigate = useNavigate();
     const items = [
-        { label: 'Home', icon: 'pi pi-home', command: () => navigate('/') },
-        { label: 'Employees', icon: 'pi pi-users', command: () => window.location.href = '/employees/index' },
+        { label: 'Employees', icon: 'pi pi-users', command: () => window.location.href = '/' },
         { label: 'Shift Rota', icon: 'pi pi-calendar-times', command: () => window.location.href = '/kanban' },
         { label: 'Logout', icon: 'pi pi-sign-out', command: () => logout() },
     ];

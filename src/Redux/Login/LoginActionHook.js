@@ -15,7 +15,7 @@ const useLoginAction = () => {
             toast("Login Successful")
             localStorage.setItem("login_token" , response.data)
             dispatch(loginSuccess(response.data))
-            navigate('/')
+            window.location.href = '/'
         } catch (error) {
             dispatch(loginFailure(error) || "Login Failed")
             console.log(error)

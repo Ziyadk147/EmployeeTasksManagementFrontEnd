@@ -14,6 +14,7 @@ export default function Employees(){
             navigate('/login')
         }
     }, [isAuthenticated]);
+
     useEffect(() => {
         getEmployees()
     }, []);

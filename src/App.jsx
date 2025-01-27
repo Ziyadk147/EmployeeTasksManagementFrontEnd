@@ -18,7 +18,6 @@ export default function App() {
         getEmployees();
     }, []);
     const Login = React.lazy(() => import('./Pages/Login/Login.jsx'))
-    const Main = React.lazy(() => import('./Pages/Main/Main.jsx'))
     const Employees = React.lazy(() => import('./Pages/Employees/Employees.jsx'))
     const EmployeesCreate = React.lazy(() => import('./Pages/Employees/EmployeesCreate.jsx'))
     const TaskManagement = React.lazy(() => import('./Pages/TaskManagement/TaskManagement.jsx'))
@@ -26,11 +25,10 @@ export default function App() {
     const pages = [
 
         {name: "Login" , path:"/login" , element: <Login />},
-        {name: "Employees" , path:"/employees/index" , element: <Employees /> },
+        {name: "Employees" , path:"/" , element: <Employees /> },
         {name: "EmployeesCreate" , path:"/employees/create" , element: <EmployeesCreate /> },
         {name: "EmployeesEdit" , path:"/employees/:id" , element: <EmployeesCreate  /> },
         {name: "Kanban" , path:"/kanban" , element: <TaskManagement  /> },
-        {name: "Main" , path:"/" , element: <Main /> }
     ]
 
     return (
