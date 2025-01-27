@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import useTaskAction from "../../Redux/Task/TaskActionHook.js";
+import useLoginAction from "../../Redux/Login/LoginActionHook.js";
 
 const TaskManagement = () => {
     const [sidebarData, setSidebarData] = useState({ id: null, day: null });
@@ -22,6 +23,13 @@ const TaskManagement = () => {
         getTasks();
     }, []);
 
+    const {isAuthenticated} = useLoginAction();
+
+    useEffect(() => {
+        if(!isAuthenticated){
+            window.location.href = "/login"
+        }
+    })
     const [tasks, setTasks] = useState(reduxTasks);
 
     useEffect(() => {
