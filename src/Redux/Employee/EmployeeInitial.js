@@ -1,5 +1,6 @@
 export const employeeInitial = {
-    employees: [{}],
+    employees: [],
+    selectedEmployee:{},
     isLoading: false,
     errors: null
 }
